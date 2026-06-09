@@ -921,7 +921,7 @@ async function runDetect(){
   // Simulate processing delay for realism
   await new Promise(r=>setTimeout(r,900+Math.random()*600));
  const response = await fetch(
-  "http://127.0.0.1:5000/predict",
+  "https://defensio-spamx.onrender.com/predict",
   {
     method: "POST",
     headers: {
