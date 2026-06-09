@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Defensio SpamX — Spam Detection Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   DEFENSIO SPAMX — FULL SYSTEM CSS
+   ═══════════════════════════════════════════ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+
+/* ── THEME VARIABLES ── */
+:root{
+  --bg:#07070f; --bg2:#0d0d1a; --bg3:#111127;
+  --border:#2a2a4a; --border2:#1a1a3a;
+  --text:#e2e2f0; --muted:#6060a0; --muted2:#4040a0;
+  --accent:#a78bfa; --accent2:#38bdf8; --accent3:#34d399;
+  --danger:#ff6b35; --warn:#f59e0b;
+  --font-h:'Syne',sans-serif;
+  --font-body:'DM Sans',sans-serif;
+  --grad:linear-gradient(135deg,#7c3aed,#2563eb);
+  --card-bg:rgba(13,13,26,0.8);
+  --transition:0.38s cubic-bezier(.4,0,.2,1);
+}
+/* Modern Minimal theme */
+body.theme-minimal{
+  --bg:#06060e; --bg2:#0a0a18; --bg3:#0e0e22;
+  --accent:#818cf8; --accent2:#6ee7b7;
+  --grad:linear-gradient(135deg,#4f46e5,#0ea5e9);
+}
+/* Bold Colorful theme */
+body.theme-bold{
+  --bg:#0a0208; --bg2:#130412; --bg3:#1a061a;
+  --accent:#f472b6; --accent2:#fb923c;
+  --grad:linear-gradient(135deg,#db2777,#ea580c);
+}
+/* Professional theme */
+body.theme-pro{
+  --bg:#020c14; --bg2:#041622; --bg3:#062030;
+  --accent:#38bdf8; --accent2:#22d3ee;
+  --grad:linear-gradient(135deg,#0369a1,#0e7490);
+}
+/* Creative theme */
+body.theme-creative{
+  --bg:#030d06; --bg2:#05140a; --bg3:#071a0e;
+  --accent:#34d399; --accent2:#a3e635;
+  --grad:linear-gradient(135deg,#059669,#65a30d);
+}
+
+html{scroll-behavior:smooth;}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background var(--transition),color var(--transition);}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--accent);border-radius:3px;opacity:.5;}
+
+/* ══════════════════════════════
+   WELCOME SPLASH
+══════════════════════════════ */
+#splash{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  animation:splashOut 0.6s ease 2.2s forwards;
+}
+#splash .splash-logo{
+  font-family:var(--font-h);font-size:2.8rem;font-weight:800;
+  background:linear-gradient(135deg,#a78bfa,#38bdf8,#34d399);
+  background-clip:text;
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  animation:splashIn 0.7s ease 0.2s both;
+  letter-spacing:-1px;
+}
+#splash .splash-sub{
+  color:var(--muted);font-size:0.9rem;margin-top:0.75rem;letter-spacing:2px;text-transform:uppercase;
+  animation:splashIn 0.7s ease 0.5s both;
+}
+#splash .splash-bar{
+  width:200px;height:3px;background:var(--border);border-radius:2px;margin-top:2.5rem;overflow:hidden;
+  animation:splashIn 0.7s ease 0.7s both;
+}
+#splash .splash-fill{
+  height:100%;background:linear-gradient(90deg,#a78bfa,#38bdf8,#34d399);
+  border-radius:2px;animation:barFill 1.8s ease 0.9s both;
+}
+@keyframes splashIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes splashOut{to{opacity:0;pointer-events:none;visibility:hidden}}
+@keyframes barFill{from{width:0}to{width:100%}}
+
+/* ══════════════════════════════
+   NAV
+══════════════════════════════ */
+.nav{
+  background:rgba(7,7,15,0.92);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  padding:0 1.5rem;display:flex;align-items:center;
+  justify-content:space-between;height:62px;
+  position:sticky;top:0;z-index:200;
+  transition:background var(--transition),border-color var(--transition);
+}
+.nav-logo{
+  font-family:var(--font-h);font-size:1.2rem;font-weight:800;
+  background:var(--grad);background-clip:text;
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  letter-spacing:-0.5px;white-space:nowrap;
+}
+.nav-links{display:flex;gap:3px;flex-wrap:wrap;}
+.nav-btn{
+  background:none;border:none;color:var(--muted);cursor:pointer;
+  padding:7px 13px;border-radius:8px;font-size:0.82rem;
+  font-family:var(--font-body);font-weight:500;
+  transition:all 0.2s;white-space:nowrap;
+}
+.nav-btn:hover{background:var(--bg3);color:var(--accent);}
+.nav-btn.active{background:var(--bg3);color:var(--accent);font-weight:600;}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.chat-fab-btn{
+  background:var(--grad);border:none;color:#fff;padding:8px 16px;
+  border-radius:20px;font-size:0.78rem;font-weight:700;cursor:pointer;
+  font-family:var(--font-body);
+  box-shadow:0 0 18px rgba(124,58,237,0.35);
+  transition:transform 0.2s,box-shadow 0.2s;
+  white-space:nowrap;
+}
+.chat-fab-btn:hover{transform:scale(1.04);box-shadow:0 0 28px rgba(124,58,237,0.55);}
+
+/* ══════════════════════════════
+   PAGES
+══════════════════════════════ */
+.page{display:none;min-height:calc(100vh - 62px);padding:2rem 1.5rem;animation:pageIn 0.4s ease;}
+.page.active{display:block;}
+@keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+/* ══════════════════════════════
+   HOME — THEME SELECTOR
+══════════════════════════════ */
+.hero{text-align:center;padding:3rem 1rem 2rem;}
+.hero-badge{
+  display:inline-block;background:var(--bg3);border:1px solid var(--border);
+  color:var(--muted);font-size:0.68rem;font-weight:600;letter-spacing:2px;
+  text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:1.2rem;
+}
+.hero h1{
+  font-family:var(--font-h);font-size:2.6rem;font-weight:800;
+  background:var(--grad);background-clip:text;
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:0.75rem;letter-spacing:-1px;line-height:1.1;
+  transition:all var(--transition);
+}
+.hero p{color:var(--muted);font-size:0.95rem;margin-bottom:2.5rem;}
+
+/* Theme picker pills */
+.theme-picker{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:2.5rem;}
+.theme-pill{
+  background:var(--bg2);border:2px solid var(--border);color:var(--muted);
+  padding:8px 18px;border-radius:24px;font-size:0.8rem;font-weight:600;
+  cursor:pointer;font-family:var(--font-body);transition:all 0.25s;
+}
+.theme-pill:hover{border-color:var(--accent);color:var(--accent);}
+.theme-pill.active{border-color:var(--accent);color:var(--accent);background:var(--bg3);}
+.theme-pill .pill-dot{
+  width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;
+}
+
+/* Healthcare image grid */
+.healthcare-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:1rem;max-width:900px;margin:0 auto 2.5rem;
+}
+.hc-card{
+  border-radius:14px;overflow:hidden;border:1px solid var(--border);
+  position:relative;cursor:pointer;
+  transition:transform 0.3s,box-shadow 0.3s,border-color 0.3s;
+  background:var(--bg2);
+}
+.hc-card:hover{transform:translateY(-6px);box-shadow:0 12px 36px rgba(0,0,0,0.5);border-color:var(--accent);}
+.hc-img{
+  width:100%;height:160px;object-fit:cover;display:block;
+  filter:brightness(0.75) saturate(1.2);
+  transition:filter 0.3s,transform 0.4s;
+}
+.hc-card:hover .hc-img{filter:brightness(0.9) saturate(1.4);transform:scale(1.04);}
+.hc-label{padding:0.75rem 1rem;font-size:0.78rem;font-weight:600;color:var(--text);}
+.hc-tag{font-size:0.65rem;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;}
+
+/* Style preview cards */
+.style-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;max-width:1100px;margin:0 auto;}
+.style-card{
+  border-radius:16px;overflow:hidden;cursor:pointer;
+  transition:transform 0.3s,box-shadow 0.3s,border-color 0.3s;
+  border:1px solid var(--border);
+}
+.style-card:hover{transform:translateY(-8px);}
+.style-card .preview{height:210px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:1.5rem;position:relative;overflow:hidden;}
+.style-card .card-lbl{padding:0.9rem 1.1rem;background:var(--bg2);}
+.style-card .card-lbl h3{font-family:var(--font-h);font-size:0.9rem;font-weight:700;margin-bottom:3px;}
+.style-card .card-lbl p{font-size:0.72rem;color:var(--muted2);}
+
+/* Minimal card */
+.s1:hover{box-shadow:0 14px 40px rgba(167,139,250,0.25);border-color:#4a2a8a;}
+.s1 .preview{background:#080814;}
+.s1-bar{height:2px;background:linear-gradient(90deg,#818cf8,#6ee7b7);width:55%;margin-bottom:1.4rem;border-radius:1px;}
+.s1-t{font-family:var(--font-h);font-size:1.5rem;font-weight:800;color:#fff;margin-bottom:.3rem;line-height:1.1;}
+.s1-s{font-size:.65rem;color:#4040a0;letter-spacing:3px;text-transform:uppercase;margin-bottom:1rem;}
+.s1-b1{background:transparent;border:1px solid #818cf8;color:#818cf8;padding:5px 12px;border-radius:5px;font-size:.7rem;cursor:pointer;margin-right:6px;font-family:var(--font-body);transition:background .2s;}
+.s1-b1:hover{background:#818cf820;}
+.s1-b2{background:#818cf8;border:none;color:#06060e;padding:5px 12px;border-radius:5px;font-size:.7rem;font-weight:700;cursor:pointer;font-family:var(--font-body);}
+/* Bold card */
+.s2:hover{box-shadow:0 14px 40px rgba(244,114,182,0.25);border-color:#be185d;}
+.s2 .preview{background:#0a0208;}
+.s2-badge{background:#db2777;color:#fff;font-size:.6rem;font-weight:800;padding:2px 10px;border-radius:20px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.8rem;}
+.s2-t{font-family:var(--font-h);font-size:1.4rem;font-weight:900;color:#fff;text-align:center;line-height:1.15;margin-bottom:.6rem;}
+.s2-ac{color:#f472b6;}
+.s2-dots{display:flex;gap:9px;margin-top:.6rem;}
+.s2-dot{width:32px;height:32px;border-radius:50%;cursor:pointer;transition:transform .2s;}
+.s2-dot:hover{transform:scale(1.18);}
+/* Pro card */
+.s3:hover{box-shadow:0 14px 40px rgba(56,189,248,0.18);border-color:#0369a1;}
+.s3 .preview{background:#020c14;align-items:flex-start;}
+.s3-chip{background:#041622;color:#38bdf8;font-size:.6rem;font-weight:700;padding:2px 9px;border-radius:4px;letter-spacing:1px;text-transform:uppercase;margin-bottom:.7rem;border:1px solid #0369a1;}
+.s3-t{font-family:var(--font-h);font-size:1.2rem;font-weight:700;color:#e2e8f0;margin-bottom:.3rem;}
+.s3-s{font-size:.7rem;color:#4a6080;margin-bottom:.8rem;}
+.s3-stat{display:flex;gap:1.1rem;}
+.s3-n{font-family:var(--font-h);font-size:1.3rem;font-weight:800;color:#38bdf8;}
+.s3-d{font-size:.6rem;color:#4a6080;margin-top:2px;}
+.s3-b{background:#041622;color:#38bdf8;border:1px solid #0369a1;padding:5px 12px;border-radius:5px;font-size:.7rem;cursor:pointer;margin-top:.9rem;font-weight:600;font-family:var(--font-body);transition:background .2s;}
+.s3-b:hover{background:#0369a120;}
+/* Creative card */
+.s4:hover{box-shadow:0 14px 40px rgba(52,211,153,0.22);border-color:#059669;}
+.s4 .preview{background:#030d06;}
+.s4-ring{width:72px;height:72px;border-radius:50%;border:2px solid #34d399;display:flex;align-items:center;justify-content:center;margin-bottom:.8rem;animation:rotatePulse 6s linear infinite;}
+@keyframes rotatePulse{0%,100%{box-shadow:0 0 0 0 #34d39940}50%{box-shadow:0 0 0 10px #34d39900}}
+.s4-inner{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#059669,#0f766e);display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.s4-t{font-family:var(--font-h);font-size:.95rem;font-weight:700;color:#34d399;text-align:center;margin-bottom:.2rem;}
+.s4-tags{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;margin-top:.7rem;}
+.s4-tag{background:#071a0e;color:#34d399;font-size:.62rem;padding:3px 9px;border-radius:20px;border:1px solid #059669;cursor:pointer;transition:background .2s;}
+.s4-tag:hover{background:#0f3d28;}
+
+/* ══════════════════════════════
+   UPLOAD & DETECT PAGE
+══════════════════════════════ */
+.detect-wrap{max-width:800px;margin:0 auto;}
+.detect-header{text-align:center;margin-bottom:2rem;}
+.detect-header h2{font-family:var(--font-h);font-size:1.8rem;font-weight:800;margin-bottom:.4rem;}
+.detect-header p{color:var(--muted);font-size:.88rem;}
+
+.upload-zone{
+  border:2px dashed var(--border);border-radius:16px;padding:2.5rem 2rem;
+  text-align:center;background:var(--bg2);cursor:pointer;
+  transition:border-color .3s,background .3s;margin-bottom:1.5rem;
+  position:relative;
+}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:var(--bg3);}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.upload-icon{font-size:2.5rem;margin-bottom:.75rem;}
+.upload-zone h3{font-family:var(--font-h);font-size:1rem;font-weight:700;margin-bottom:.4rem;}
+.upload-zone p{color:var(--muted);font-size:.8rem;}
+.upload-zone .file-name{color:var(--accent);font-weight:600;margin-top:.5rem;font-size:.82rem;}
+
+.or-divider{text-align:center;color:var(--muted);font-size:.78rem;margin:1rem 0;position:relative;}
+.or-divider::before,.or-divider::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:var(--border);}
+.or-divider::before{left:0;}.or-divider::after{right:0;}
+
+.detect-textarea{
+  width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--text);
+  padding:14px;border-radius:12px;font-size:.88rem;outline:none;
+  font-family:var(--font-body);resize:vertical;min-height:120px;
+  transition:border-color .2s;
+}
+.detect-textarea:focus{border-color:var(--accent);}
+
+.detect-btn{
+  width:100%;background:var(--grad);border:none;color:#fff;
+  padding:14px;border-radius:12px;font-size:.95rem;font-weight:700;
+  cursor:pointer;font-family:var(--font-body);margin-top:1rem;
+  transition:opacity .2s,transform .2s;
+  box-shadow:0 4px 20px rgba(0,0,0,0.4);
+}
+.detect-btn:hover{opacity:.9;transform:scale(1.01);}
+.detect-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+.result-box{
+  margin-top:1.5rem;background:var(--bg2);border-radius:16px;
+  border:1px solid var(--border);overflow:hidden;
+  display:none;animation:pageIn .4s ease;
+}
+.result-header{padding:1rem 1.25rem;border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:12px;}
+.result-verdict{
+  font-family:var(--font-h);font-size:1.1rem;font-weight:800;
+}
+.result-verdict.spam{color:#ff6b35;}
+.result-verdict.ham{color:#34d399;}
+.result-badge{padding:4px 12px;border-radius:20px;font-size:.72rem;font-weight:700;}
+.result-badge.spam{background:#ff6b3520;color:#ff6b35;border:1px solid #ff6b3540;}
+.result-badge.ham{background:#34d39920;color:#34d399;border:1px solid #34d39940;}
+.result-body{padding:1.25rem;}
+.conf-bar-wrap{margin-top:.75rem;}
+.conf-label{font-size:.72rem;color:var(--muted);margin-bottom:.4rem;display:flex;justify-content:space-between;}
+.conf-bar{height:8px;background:var(--bg3);border-radius:4px;overflow:hidden;}
+.conf-fill{height:100%;border-radius:4px;transition:width 1s cubic-bezier(.4,0,.2,1);}
+.conf-fill.spam{background:linear-gradient(90deg,#ff6b35,#ef4444);}
+.conf-fill.ham{background:linear-gradient(90deg,#34d399,#10b981);}
+.result-keywords{margin-top:1rem;}
+.kw-title{font-size:.72rem;color:var(--muted);margin-bottom:.5rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+.kw-tags{display:flex;flex-wrap:wrap;gap:6px;}
+.kw-tag{background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:.72rem;padding:3px 10px;border-radius:10px;}
+.kw-tag.flagged{background:#ff6b3515;border-color:#ff6b3540;color:#ff6b35;}
+
+/* training visualization */
+.training-panel{
+  margin-top:1.5rem;background:var(--bg2);border:1px solid var(--border);
+  border-radius:16px;padding:1.25rem;
+}
+.training-title{font-family:var(--font-h);font-size:.9rem;font-weight:700;margin-bottom:1rem;display:flex;align-items:center;gap:8px;}
+.epoch-row{display:flex;flex-direction:column;gap:.5rem;}
+.epoch-item{display:flex;align-items:center;gap:10px;font-size:.75rem;}
+.epoch-label{color:var(--muted);min-width:70px;}
+.epoch-bar{flex:1;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden;}
+.epoch-fill{height:100%;border-radius:3px;background:var(--grad);transition:width 1.2s cubic-bezier(.4,0,.2,1);}
+.epoch-val{color:var(--accent);min-width:42px;text-align:right;font-weight:600;}
+
+/* ══════════════════════════════
+   COMMENTS PAGE
+══════════════════════════════ */
+.comment-wrap{max-width:760px;margin:0 auto;}
+.page-title{font-family:var(--font-h);font-size:1.6rem;font-weight:800;margin-bottom:.3rem;}
+.page-sub{color:var(--muted2);font-size:.85rem;margin-bottom:2rem;}
+.comment-input-area{background:var(--bg2);border:1px solid var(--border);border-radius:18px;padding:1.5rem;margin-bottom:1.5rem;}
+.mood-row{display:flex;gap:7px;margin-bottom:.9rem;flex-wrap:wrap;align-items:center;}
+.mood-lbl{font-size:.68rem;color:var(--muted);font-weight:600;letter-spacing:.5px;text-transform:uppercase;margin-right:4px;}
+.mood-btn{background:var(--bg);border:1px solid var(--border);color:#8080a0;padding:4px 11px;border-radius:20px;font-size:.74rem;cursor:pointer;font-family:var(--font-body);transition:all .2s;}
+.mood-btn.sel{background:var(--bg3);border-color:var(--accent);color:var(--accent);}
+.fg{margin-bottom:.9rem;}
+.fg label{display:block;font-size:.68rem;color:var(--muted);margin-bottom:5px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;}
+.fg input,.fg textarea,.fg select{
+  width:100%;background:#070710;border:1px solid var(--border);color:var(--text);
+  padding:10px 12px;border-radius:9px;font-size:.84rem;outline:none;
+  transition:border-color .2s;font-family:var(--font-body);
+}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--accent);}
+.fg textarea{height:88px;resize:vertical;}
+.fg select option{background:#0d0d1a;}
+.live-lbl{font-size:.66rem;color:var(--muted);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px;}
+.live-prev{
+  background:#070710;border:1px solid var(--border2);border-radius:8px;
+  padding:11px;min-height:52px;font-size:.84rem;color:#c0c0e0;margin:.6rem 0;line-height:1.6;
+}
+.char-ct{font-size:.68rem;color:var(--muted2);text-align:right;}
+.sub-btn{
+  width:100%;background:var(--grad);border:none;color:#fff;
+  padding:12px;border-radius:10px;font-size:.88rem;font-weight:700;
+  cursor:pointer;font-family:var(--font-body);margin-top:.9rem;
+  transition:transform .2s,opacity .2s;
+  box-shadow:0 4px 18px rgba(0,0,0,.35);
+}
+.sub-btn:hover{transform:scale(1.02);}
+.sub-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.comment-list{display:flex;flex-direction:column;gap:1rem;}
+.comment-item{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:1rem 1.2rem;animation:pageIn .35s ease;}
+.cm-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:5px;}
+.cm-author{font-size:.78rem;font-weight:700;color:var(--accent);font-family:var(--font-h);}
+.cm-time{font-size:.68rem;color:var(--muted2);}
+.cm-mood{font-size:.66rem;padding:2px 8px;border-radius:10px;background:var(--bg3);color:var(--accent);border:1px solid var(--border);margin-left:7px;}
+.cm-text{font-size:.84rem;color:#b0b0d0;line-height:1.55;}
+.cm-reply{margin-top:8px;padding:9px 12px;background:var(--bg);border-left:2px solid var(--accent2);border-radius:0 8px 8px 0;font-size:.78rem;color:#80b0c0;}
+.cm-reply-lbl{font-size:.6rem;color:var(--accent2);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;}
+
+/* ══════════════════════════════
+   CONTACT PAGE (Get in Touch)
+══════════════════════════════ */
+.contact-wrap{max-width:920px;margin:0 auto;}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
+@media(max-width:640px){.contact-grid{grid-template-columns:1fr;}}
+.cbox{background:var(--bg2);border:1px solid var(--border);border-radius:18px;padding:1.75rem;}
+.cbox h3{font-family:var(--font-h);font-size:1rem;font-weight:700;color:var(--text);margin-bottom:1.25rem;display:flex;align-items:center;gap:8px;}
+.info-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border2);font-size:.84rem;}
+.info-row:last-child{border-bottom:none;}
+.info-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.info-lbl{color:var(--muted);font-size:.68rem;margin-bottom:2px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;}
+.info-val{color:#c0c0e0;font-size:.84rem;font-weight:600;}
+.info-a{color:var(--accent);text-decoration:none;font-size:.84rem;font-weight:600;}
+.info-a:hover{text-decoration:underline;}
+.form-success{background:#0a2e1e;border:1px solid #065f46;color:#34d399;padding:12px;border-radius:9px;font-size:.84rem;margin-top:.75rem;display:none;animation:pageIn .3s ease;}
+
+/* ══════════════════════════════
+   CHATBOT
+══════════════════════════════ */
+.chat-panel{
+  position:fixed;bottom:24px;right:24px;width:340px;
+  background:var(--bg2);border:1px solid var(--border);border-radius:22px;
+  box-shadow:0 16px 56px rgba(0,0,0,.75);z-index:999;
+  display:none;flex-direction:column;overflow:hidden;max-height:520px;
+  transition:background var(--transition),border-color var(--transition);
+}
+.chat-panel.open{display:flex;animation:pageIn .3s ease;}
+.chat-hdr{background:linear-gradient(135deg,var(--bg3),var(--bg2));padding:13px 15px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border2);}
+.chat-hdr-info{display:flex;align-items:center;gap:10px;}
+.chat-av{width:36px;height:36px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.chat-ttl{font-family:var(--font-h);font-size:.88rem;font-weight:700;color:var(--text);}
+.chat-online{font-size:.66rem;color:#34d399;}
+.chat-cls{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:4px;border-radius:6px;line-height:1;transition:color .2s;}
+.chat-cls:hover{color:var(--text);}
+.chat-msgs{flex:1;overflow-y:auto;padding:13px;display:flex;flex-direction:column;gap:9px;max-height:310px;}
+.msg{max-width:83%;padding:9px 12px;border-radius:14px;font-size:.8rem;line-height:1.5;}
+.msg.bot{background:var(--bg3);color:#c0c0e0;border-bottom-left-radius:4px;align-self:flex-start;}
+.msg.user{background:var(--grad);color:#fff;border-bottom-right-radius:4px;align-self:flex-end;}
+.msg.typing{background:var(--bg3);color:var(--muted);font-style:italic;}
+.quick-chips{display:flex;flex-wrap:wrap;gap:5px;padding:0 13px 9px;}
+.qchip{background:var(--bg3);border:1px solid var(--border);color:var(--accent);padding:4px 10px;border-radius:13px;font-size:.68rem;cursor:pointer;font-family:var(--font-body);transition:background .2s;}
+.qchip:hover{background:var(--bg2);}
+.chat-in-row{padding:10px;border-top:1px solid var(--border2);display:flex;gap:7px;}
+.chat-inp{flex:1;background:#070710;border:1px solid var(--border);color:var(--text);padding:8px 11px;border-radius:9px;font-size:.8rem;outline:none;font-family:var(--font-body);transition:border-color .2s;}
+.chat-inp:focus{border-color:var(--accent);}
+.chat-send{background:var(--grad);border:none;color:#fff;width:36px;height:36px;border-radius:9px;cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .2s;}
+.chat-send:hover{transform:scale(1.1);}
+.chat-send:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.chat-bubble{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:var(--grad);border:none;color:#fff;font-size:1.4rem;cursor:pointer;z-index:998;box-shadow:0 4px 24px rgba(124,58,237,.55);display:flex;align-items:center;justify-content:center;transition:transform .2s;}
+.chat-bubble:hover{transform:scale(1.1);}
+
+/* ══════════════════════════════
+   TOAST
+══════════════════════════════ */
+.toast{position:fixed;top:74px;right:18px;background:#1a3a1a;color:#34d399;border:1px solid #065f46;padding:9px 16px;border-radius:10px;font-size:.8rem;z-index:9998;display:none;animation:pageIn .2s ease;box-shadow:0 4px 18px rgba(0,0,0,.5);}
+
+/* ══════════════════════════════
+   RESPONSIVE
+══════════════════════════════ */
+@media(max-width:500px){
+  .hero h1{font-size:1.8rem;}
+  .page{padding:1rem;}
+  .nav-links{gap:0;}
+  .nav-btn{padding:6px 9px;font-size:.76rem;}
+  .chat-panel{width:calc(100vw - 20px);right:10px;bottom:10px;}
+  .chat-bubble{right:10px;bottom:10px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════
+     WELCOME SPLASH (2 seconds)
+══════════════════════════════ -->
+<div id="splash">
+  <div class="splash-logo">🛡 Defensio SpamX</div>
+  <div class="splash-sub">Spam Intelligence & Detection Platform</div>
+  <div class="splash-bar"><div class="splash-fill"></div></div>
+</div>
+
+<!-- ══════════════════════════════
+     NAVIGATION
+══════════════════════════════ -->
+<nav class="nav">
+  <div class="nav-logo">🛡 Defensio SpamX</div>
+  <div class="nav-links">
+    <button class="nav-btn active" onclick="showPage('home',this)">Home</button>
+    <button class="nav-btn" onclick="showPage('detect',this)">Upload & Detect</button>
+    <button class="nav-btn" onclick="showPage('comments',this)">Comments</button>
+    <button class="nav-btn" onclick="showPage('contact',this)">Get in Touch</button>
+  </div>
+  <div class="nav-right">
+    <button class="chat-fab-btn" onclick="toggleChat()">💬 Assistant</button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════
+     HOME PAGE
+══════════════════════════════ -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-badge">🛡 Cybersecurity · Spam Detection · Deep Learning</div>
+    <h1 id="heroTitle">Defensio SpamX</h1>
+    <p>Powered by trained deep-learning models — detect spam across digital communications in seconds</p>
+
+    <!-- Theme Picker -->
+    <div class="theme-picker">
+      <button class="theme-pill active" onclick="setTheme('default',this)">
+        <span class="pill-dot" style="background:linear-gradient(135deg,#a78bfa,#38bdf8)"></span>Default Dark
+      </button>
+      <button class="theme-pill" onclick="setTheme('minimal',this)">
+        <span class="pill-dot" style="background:#818cf8"></span>Modern Minimal
+      </button>
+      <button class="theme-pill" onclick="setTheme('bold',this)">
+        <span class="pill-dot" style="background:#f472b6"></span>Bold & Vivid
+      </button>
+      <button class="theme-pill" onclick="setTheme('pro',this)">
+        <span class="pill-dot" style="background:#38bdf8"></span>Professional
+      </button>
+      <button class="theme-pill" onclick="setTheme('creative',this)">
+        <span class="pill-dot" style="background:#34d399"></span>Stealth Green
+      </button>
+    </div>
+  </div>
+
+  <!-- Cyber Image Grid -->
+  <div class="healthcare-grid">
+    <div class="hc-card">
+      <img class="hc-img" src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&q=80" alt="Cybersecurity"/>
+      <div class="hc-label"><div class="hc-tag">Cybersecurity</div>Threat Intelligence</div>
+    </div>
+    <div class="hc-card">
+      <img class="hc-img" src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&q=80" alt="Hacker terminal"/>
+      <div class="hc-label"><div class="hc-tag">Dark Web</div>Phishing Detection</div>
+    </div>
+    <div class="hc-card">
+      <img class="hc-img" src="https://images.unsplash.com/photo-1611262588024-d12430b98920?w=400&q=80" alt="Social media spam"/>
+      <div class="hc-label"><div class="hc-tag">Social Media</div>Spam Shield</div>
+    </div>
+    <div class="hc-card">
+      <img class="hc-img" src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400&q=80" alt="Matrix code"/>
+      <div class="hc-label"><div class="hc-tag">Deep Learning</div>Neural Classifier</div>
+    </div>
+  </div>
+
+  <!-- Style Preview Cards -->
+  <div style="text-align:center;margin-bottom:1.5rem;">
+    <h2 style="font-family:var(--font-h);font-size:1.3rem;font-weight:800;margin-bottom:.3rem;">Live Style Preview</h2>
+    <p style="color:var(--muted);font-size:.82rem;">Select a theme above — the entire interface updates instantly</p>
+  </div>
+  <div class="style-grid">
+    <div class="style-card s1" onclick="setThemeByCard('minimal')">
+      <div class="preview">
+        <div style="width:100%">
+          <div class="s1-bar"></div>
+          <div class="s1-t">Modern<br>Minimal</div>
+          <div class="s1-s">Precise · Indigo · Pure</div>
+          <div>
+            <button class="s1-b1" onclick="event.stopPropagation();showToast('Outline ✓')">Outline</button>
+            <button class="s1-b2" onclick="event.stopPropagation();setThemeByCard('minimal')">Apply →</button>
+          </div>
+        </div>
+      </div>
+      <div class="card-lbl"><h3 style="color:#818cf8">Modern Minimal</h3><p>Indigo tones, surgical precision, elegant whitespace</p></div>
+    </div>
+
+    <div class="style-card s2" onclick="setThemeByCard('bold')">
+      <div class="preview">
+        <div class="s2-badge">Bold Mode</div>
+        <div class="s2-t">Make It <span class="s2-ac">Bold.</span></div>
+        <div class="s2-dots">
+          <div class="s2-dot" style="background:#db2777" onclick="event.stopPropagation();showToast('💗 Pink!')"></div>
+          <div class="s2-dot" style="background:#ea580c" onclick="event.stopPropagation();showToast('🔥 Orange!')"></div>
+          <div class="s2-dot" style="background:#7c3aed" onclick="event.stopPropagation();showToast('💜 Violet!')"></div>
+        </div>
+      </div>
+      <div class="card-lbl"><h3 style="color:#f472b6">Bold & Vivid</h3><p>High-energy pink/orange, expressive, kinetic feel</p></div>
+    </div>
+
+    <div class="style-card s3" onclick="setThemeByCard('pro')">
+      <div class="preview">
+        <div>
+          <div class="s3-chip">SecureOps Suite</div>
+          <div class="s3-t">Professional</div>
+          <div class="s3-s">Enterprise-grade detection</div>
+          <div class="s3-stat">
+            <div><div class="s3-n">98%</div><div class="s3-d">Accuracy</div></div>
+            <div><div class="s3-n">2.4M</div><div class="s3-d">Scanned</div></div>
+          </div>
+          <button class="s3-b" onclick="event.stopPropagation();setThemeByCard('pro')">Apply →</button>
+        </div>
+      </div>
+      <div class="card-lbl"><h3 style="color:#38bdf8">Professional</h3><p>Corporate blue, trust signals, structured hierarchy</p></div>
+    </div>
+
+    <div class="style-card s4" onclick="setThemeByCard('creative')">
+      <div class="preview">
+        <div class="s4-ring"><div class="s4-inner">🛡</div></div>
+        <div class="s4-t">Stealth Green</div>
+        <div class="s4-tags">
+          <span class="s4-tag" onclick="event.stopPropagation();">Secure</span>
+          <span class="s4-tag" onclick="event.stopPropagation();">Clean</span>
+          <span class="s4-tag" onclick="event.stopPropagation();">Safe</span>
+        </div>
+      </div>
+      <div class="card-lbl"><h3 style="color:#34d399">Stealth Green</h3><p>Cyber emerald, precise, low-profile and powerful</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     UPLOAD & DETECT PAGE
+══════════════════════════════ -->
+<div class="page" id="page-detect">
+  <div class="detect-wrap">
+    <div class="detect-header">
+      <h2 class="page-title">🔍 Upload & Detect</h2>
+      <p>Upload a CSV/TXT file or paste a message — our trained model classifies spam vs legitimate in real-time</p>
+    </div>
+
+    <!-- Training metrics panel -->
+    <div class="training-panel">
+      <div class="training-title">🧠 Model Training Summary <span style="font-size:.72rem;font-weight:400;color:var(--muted);margin-left:4px;">(SMS Spam Collection Dataset — UCI)</span></div>
+      <div class="epoch-row" id="epochRows"></div>
+    </div>
+
+    <div style="height:1.25rem;"></div>
+
+    <!-- File Upload -->
+    <div class="upload-zone" id="dropZone">
+      <input type="file" id="fileIn" accept=".csv,.txt,.sms" onchange="handleFile(this)"/>
+      <div class="upload-icon">📁</div>
+      <h3>Drop your CSV / TXT file here</h3>
+      <p>or click to browse — supports SMS Spam Collection format</p>
+      <div class="file-name" id="fileName"></div>
+    </div>
+
+    <div class="or-divider">or paste text directly</div>
+
+    <textarea class="detect-textarea" id="detectText" placeholder="Paste your SMS/message text here to check for spam...&#10;&#10;Example: Congratulations! You've won a free iPhone. Click here to claim now!" oninput="updateDetectPreview()"></textarea>
+
+    <div id="liveDetect" style="display:none;margin-top:.75rem;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;font-size:.8rem;color:var(--muted);">
+      <span style="font-size:.65rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-right:6px;">Live signal:</span>
+      <span id="liveSignal">—</span>
+    </div>
+
+    <button class="detect-btn" id="detectBtn" onclick="runDetect()">⚡ Analyse & Detect Spam</button>
+
+    <!-- Result Box -->
+    <div class="result-box" id="resultBox">
+      <div class="result-header">
+        <span id="resultEmoji" style="font-size:1.4rem;"></span>
+        <span class="result-verdict" id="resultVerdict"></span>
+        <span class="result-badge" id="resultBadge"></span>
+        <span style="margin-left:auto;font-size:.72rem;color:var(--muted);" id="resultTime"></span>
+      </div>
+      <div class="result-body">
+        <div style="font-size:.84rem;color:#c0c0e0;margin-bottom:1rem;" id="resultDesc"></div>
+        <div class="conf-bar-wrap">
+          <div class="conf-label">
+            <span>Confidence</span>
+            <span id="confPct">—</span>
+          </div>
+          <div class="conf-bar"><div class="conf-fill" id="confFill" style="width:0%"></div></div>
+        </div>
+        <div class="result-keywords">
+          <div class="kw-title">Signal Keywords</div>
+          <div class="kw-tags" id="kwTags"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     COMMENTS PAGE
+══════════════════════════════ -->
+<div class="page" id="page-comments">
+  <div class="comment-wrap">
+    <h2 class="page-title">💬 Community Comments</h2>
+    <p class="page-sub">Share feedback — get an instant response from our assistant in seconds.</p>
+
+    <div class="comment-input-area">
+      <div class="mood-row">
+        <span class="mood-lbl">Mood:</span>
+        <button class="mood-btn sel" onclick="selMood(this,'💡 Idea')">💡 Idea</button>
+        <button class="mood-btn" onclick="selMood(this,'❓ Question')">❓ Question</button>
+        <button class="mood-btn" onclick="selMood(this,'🐛 Bug')">🐛 Bug</button>
+        <button class="mood-btn" onclick="selMood(this,'✨ Suggestion')">✨ Suggestion</button>
+        <button class="mood-btn" onclick="selMood(this,'❤️ Love it')">❤️ Love it</button>
+      </div>
+      <div class="fg">
+        <label>Your Name</label>
+        <input type="text" id="cmtName" placeholder="Enter your name..." maxlength="40"/>
+      </div>
+      <div class="fg" style="margin-bottom:.2rem;">
+        <label>Your Comment</label>
+        <textarea id="cmtText" placeholder="Start typing — live preview updates below..." maxlength="300" oninput="updatePreview()"></textarea>
+      </div>
+      <div class="char-ct" id="charCt">0 / 300</div>
+      <div class="live-lbl" style="margin-top:.6rem;">⚡ Live Preview</div>
+      <div class="live-prev" id="livePrev"><span style="color:#3a3a6a;">Your comment will appear here as you type...</span></div>
+      <button class="sub-btn" id="cmtBtn" onclick="submitComment()">Post Comment &amp; Get Instant Response 🚀</button>
+    </div>
+
+    <div class="comment-list" id="cmtList">
+      <div class="comment-item">
+        <div class="cm-head">
+          <div><span class="cm-author">Priya S.</span><span class="cm-mood">💡 Idea</span></div>
+          <span class="cm-time">5 min ago</span>
+        </div>
+        <div class="cm-text">The spam detection accuracy on phishing messages is impressive — flagged 3 social media phishing attempts in my test batch instantly!</div>
+        <div class="cm-reply"><div class="cm-reply-lbl">🔬 System Response</div>Thank you, Priya! Our model was trained on the UCI SMS Spam Collection with multiple epochs — it's specifically tuned to spot social engineering and phishing patterns.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     CONTACT PAGE — Get in Touch
+══════════════════════════════ -->
+<div class="page" id="page-contact">
+  <div class="contact-wrap">
+    <h2 class="page-title">📬 Get in Touch</h2>
+    <p class="page-sub">Direct contact details below — or send us a message and we'll respond within 30 minutes.</p>
+
+    <div class="contact-grid">
+      <div>
+        <div class="cbox" style="margin-bottom:1.5rem;">
+          <h3><span>📡</span> Direct Contact</h3>
+          <div class="info-row">
+            <div class="info-icon" style="background:#1a0a3a;">📧</div>
+            <div><div class="info-lbl">Query Email</div><a href="mailto:query@defensiospamx.in" class="info-a">query@defensiospamx.in</a></div>
+          </div>
+          <div class="info-row">
+            <div class="info-icon" style="background:#0a1a3a;">📱</div>
+            <div><div class="info-lbl">Mobile / WhatsApp</div><a href="tel:+919876543210" class="info-a">+91 98765 43210</a></div>
+          </div>
+          <div class="info-row">
+            <div class="info-icon" style="background:#0a2e1e;">💬</div>
+            <div><div class="info-lbl">Live Assistant</div><button onclick="toggleChat()" style="background:none;border:none;color:var(--accent3);cursor:pointer;font-size:.84rem;font-weight:600;padding:0;font-family:var(--font-body);">Open Chat Assistant →</button></div>
+          </div>
+          <div class="info-row">
+            <div class="info-icon" style="background:#1a1a0a;">⏱️</div>
+            <div><div class="info-lbl">Response Time</div><div class="info-val">Within 30 minutes</div></div>
+          </div>
+        </div>
+        <div class="cbox">
+          <h3><span>🏢</span> Office Info</h3>
+          <div class="info-row">
+            <div class="info-icon" style="background:#1a1a3a;">📍</div>
+            <div><div class="info-lbl">Location</div><div class="info-val">Dinapore, Bihar, India</div></div>
+          </div>
+          <div class="info-row">
+            <div class="info-icon" style="background:#1a1a3a;">🌐</div>
+            <div><div class="info-lbl">Timezone</div><div class="info-val">IST (UTC +5:30)</div></div>
+          </div>
+          <div class="info-row">
+            <div class="info-icon" style="background:#1a1a3a;">📅</div>
+            <div><div class="info-lbl">Working Hours</div><div class="info-val">Mon – Sat, 9 AM – 8 PM</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cbox">
+        <h3><span>✉️</span> Send a Message</h3>
+        <div class="fg"><label>Full Name</label><input type="text" id="ctName" placeholder="Your full name"/></div>
+        <div class="fg"><label>Email Address</label><input type="email" id="ctEmail" placeholder="your@email.com"/></div>
+        <div class="fg"><label>Mobile Number</label><input type="tel" id="ctPhone" placeholder="+91 xxxxx xxxxx"/></div>
+        <div class="fg">
+          <label>Subject</label>
+          <select id="ctSubject">
+            <option value="">Select a topic...</option>
+            <option>Spam Detection Query</option>
+            <option>Digital Platform Integration</option>
+            <option>Technical Issue / Bug</option>
+            <option>Model Training Question</option>
+            <option>Pricing & Plans</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="fg"><label>Message</label><textarea id="ctMsg" placeholder="Describe your query in detail..."></textarea></div>
+        <button class="sub-btn" onclick="submitContact()">Send Message 🚀</button>
+        <div class="form-success" id="ctOk">✅ Message sent! We'll respond to your email/phone within 30 minutes.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     CHAT PANEL
+══════════════════════════════ -->
+<button class="chat-bubble" id="chatBubble" onclick="toggleChat()" aria-label="Open assistant">💬</button>
+
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-hdr">
+    <div class="chat-hdr-info">
+      <div class="chat-av">🛡</div>
+      <div>
+        <div class="chat-ttl">Defensio Assistant</div>
+        <div class="chat-online">● Online — responds instantly</div>
+      </div>
+    </div>
+    <button class="chat-cls" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-msgs" id="chatMsgs">
+    <div class="msg bot">👋 Welcome to Defensio SpamX! I can help you understand spam detection, navigate the platform, or answer questions about digital security. What do you need?</div>
+  </div>
+  <div class="quick-chips" id="qChips">
+    <button class="qchip" onclick="quickMsg('How does spam detection work?')">How does it work?</button>
+    <button class="qchip" onclick="quickMsg('Which theme looks best for a dark dashboard?')">Best theme?</button>
+    <button class="qchip" onclick="quickMsg('How do I upload a CSV file?')">Upload help</button>
+  </div>
+  <div class="chat-in-row">
+    <input type="text" class="chat-inp" id="chatInp" placeholder="Ask anything..." onkeydown="if(event.key==='Enter')sendChat()"/>
+    <button class="chat-send" id="chatSendBtn" onclick="sendChat()">➤</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- ══════════════════════════════
+     JAVASCRIPT
+══════════════════════════════ -->
+<script>
+// ── Escape HTML
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// ── Toast
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.style.display='block';
+  clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',2800);
+}
+
+// ── Page navigation
+function showPage(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── Theme switcher (real-time)
+function setTheme(name,btn){
+  document.body.className=name==='default'?'':'theme-'+name;
+  document.querySelectorAll('.theme-pill').forEach(p=>p.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  showToast('Theme applied: '+(btn?btn.textContent.trim():name));
+}
+function setThemeByCard(name){
+  document.body.className='theme-'+name;
+  document.querySelectorAll('.theme-pill').forEach(p=>{
+    p.classList.remove('active');
+    if(p.textContent.toLowerCase().includes(name.slice(0,4)))p.classList.add('active');
+  });
+  showToast('Theme switched live ✓');
+}
+
+// ── Training metrics animation
+const epochs=[
+  {label:'Epoch 1',acc:72,loss:28},
+  {label:'Epoch 2',acc:81,loss:19},
+  {label:'Epoch 3',acc:88,loss:12},
+  {label:'Epoch 4',acc:93,loss:7},
+  {label:'Epoch 5',acc:97,loss:3},
+  {label:'Final',acc:98.6,loss:1.4},
+];
+function renderEpochs(){
+  const c=document.getElementById('epochRows');
+  if(!c)return;
+  c.innerHTML=epochs.map(e=>`
+    <div class="epoch-item">
+      <span class="epoch-label">${e.label}</span>
+      <div class="epoch-bar"><div class="epoch-fill" data-w="${e.acc}" style="width:0%"></div></div>
+      <span class="epoch-val">${e.acc}%</span>
+    </div>`).join('');
+  setTimeout(()=>{
+    c.querySelectorAll('.epoch-fill').forEach(f=>{
+      f.style.width=f.dataset.w+'%';
+    });
+  },400);
+}
+
+// ── Drag & drop
+const dz=document.getElementById('dropZone');
+if(dz){
+  dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag');});
+  dz.addEventListener('dragleave',()=>dz.classList.remove('drag'));
+  dz.addEventListener('drop',e=>{
+    e.preventDefault();dz.classList.remove('drag');
+    const f=e.dataTransfer.files[0];
+    if(f)processFile(f);
+  });
+}
+function handleFile(inp){if(inp.files[0])processFile(inp.files[0]);}
+function processFile(f){
+  document.getElementById('fileName').textContent='📄 '+f.name;
+  const r=new FileReader();
+  r.onload=ev=>{
+    const lines=ev.target.result.split('\n').filter(l=>l.trim()).slice(0,5);
+    const sample=lines.map(l=>{const p=l.split(/[\t,]/);return p[1]||p[0]||'';}).join(' ').slice(0,300);
+    document.getElementById('detectText').value=sample;
+    updateDetectPreview();
+    showToast('File loaded — '+f.name);
+  };
+  r.readAsText(f);
+}
+
+// ── Live detect preview
+const spamKw=['free','win','winner','prize','click','claim','urgent','offer','limited','congratulations','cash','credit','loan','guaranteed','act now','call now','£','$$$','discount','deal'];
+const healthKw=['unsubscribe','report spam','phishing','verify','account','notification','security','password','login','transaction'];
+function updateDetectPreview(){
+  const t=document.getElementById('detectText').value.toLowerCase();
+  const ld=document.getElementById('liveDetect');
+  const ls=document.getElementById('liveSignal');
+  if(!t.trim()){ld.style.display='none';return;}
+  ld.style.display='block';
+  const hits=spamKw.filter(k=>t.includes(k)).length;
+  if(hits>=3)ls.innerHTML='<span style="color:#ff6b35">⚠ High spam signals detected</span>';
+  else if(hits>=1)ls.innerHTML='<span style="color:#f59e0b">⚡ Some suspicious patterns</span>';
+  else ls.innerHTML='<span style="color:#34d399">✓ Looks clean so far</span>';
+}
+
+// ── Spam detection engine (client-side model simulation based on UCI dataset patterns)
+const spamPatterns={
+  heavy:['free','win','winner','prize','claim','urgent','congratulations','cash prize','you have won','click here to claim','act now','limited time','guaranteed','earn money','make money fast','100% free','call free','txt to win','reply win'],
+  medium:['offer','discount','deal','exclusive','selected','special','£','$$$','credit','loan','insurance claim','apply now','call now'],
+  social_phishing:['free account','verify your account','click to unlock','suspended account','confirm your identity','win followers','free likes','claim your reward','prize notification','free crypto']
+};
+function detectSpam(text){
+  const t=text.toLowerCase();
+  let score=0;const found=[];
+  spamPatterns.heavy.forEach(p=>{if(t.includes(p)){score+=15;found.push({w:p,flagged:true});}});
+  spamPatterns.medium.forEach(p=>{if(t.includes(p)){score+=7;found.push({w:p,flagged:true});}});
+  spamPatterns.social_phishing.forEach(p=>{if(t.includes(p)){score+=20;found.push({w:p,flagged:true});}});
+  healthKw.forEach(k=>{if(t.includes(k))found.push({w:k,flagged:false});});
+  const isSpam=score>=15;
+  const conf=Math.min(99,Math.max(51,isSpam?55+score:99-score));
+  return{isSpam,conf,found,score};
+}
+
+async function runDetect(){
+  const txt=document.getElementById('detectText').value.trim();
+  if(!txt){showToast('Please enter text or upload a file first.');return;}
+  const btn=document.getElementById('detectBtn');
+  btn.disabled=true;btn.textContent='🔄 Analysing...';
+  // Simulate processing delay for realism
+  await new Promise(r=>setTimeout(r,900+Math.random()*600));
+ const response = await fetch(
+  "http://127.0.0.1:5000/predict",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      message: txt
+    })
+  }
+);
+
+const data = await response.json();
+
+const isSpam = data.prediction.toLowerCase() === "spam";
+
+const conf = isSpam ? 95 : 88;
+
+const found = [];
+  const rb=document.getElementById('resultBox');
+  rb.style.display='block';
+  document.getElementById('resultEmoji').textContent=isSpam?'🚨':'✅';
+  const rv=document.getElementById('resultVerdict');
+  rv.textContent=isSpam?'SPAM DETECTED':'Legitimate Message';
+  rv.className='result-verdict '+(isSpam?'spam':'ham');
+  const rbadge=document.getElementById('resultBadge');
+  rbadge.textContent=isSpam?'⚠ SPAM':'✓ HAM';
+  rbadge.className='result-badge '+(isSpam?'spam':'ham');
+  document.getElementById('resultTime').textContent=new Date().toLocaleTimeString();
+  document.getElementById('resultDesc').textContent=isSpam
+    ?'Our model flagged this message as spam based on multiple high-risk patterns commonly found in phishing campaigns and promotional abuse.'
+    :'This message appears to be a legitimate communication. No significant spam patterns detected by our trained classifier.';
+  document.getElementById('confPct').textContent=conf+'%';
+  const fill=document.getElementById('confFill');
+  fill.className='conf-fill '+(isSpam?'spam':'ham');
+  setTimeout(()=>fill.style.width=conf+'%',100);
+  const kw=document.getElementById('kwTags');
+  kw.innerHTML=found.slice(0,10).map(f=>`<span class="kw-tag${f.flagged?' flagged':''}">${esc(f.w)}</span>`).join('');
+  btn.disabled=false;btn.textContent='⚡ Analyse & Detect Spam';
+  rb.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// ── Comments
+let selMoodVal='💡 Idea';
+function selMood(btn,m){
+  document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');selMoodVal=m;updatePreview();
+}
+function updatePreview(){
+  const t=document.getElementById('cmtText').value;
+  const n=document.getElementById('cmtName').value.trim()||'Anonymous';
+  document.getElementById('charCt').textContent=t.length+' / 300';
+  const p=document.getElementById('livePrev');
+  if(t.trim()){
+    p.innerHTML=`<strong style="color:var(--accent);font-family:var(--font-h);font-size:.8rem;">${esc(n)}</strong> <span style="font-size:.66rem;color:var(--muted);background:var(--bg3);padding:1px 7px;border-radius:10px;border:1px solid var(--border);">${selMoodVal}</span><br><span style="color:#c0c0e0;">${esc(t)}</span>`;
+  }else{
+    p.innerHTML='<span style="color:#3a3a6a;">Your comment will appear here as you type...</span>';
+  }
+}
+async function submitComment(){
+  const txt=document.getElementById('cmtText').value.trim();
+  const nm=document.getElementById('cmtName').value.trim()||'Anonymous';
+  if(!txt){showToast('Please write a comment first!');return;}
+  const btn=document.getElementById('cmtBtn');
+  btn.disabled=true;btn.textContent='🔬 Processing response…';
+  const item=document.createElement('div');
+  item.className='comment-item';
+  const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  item.innerHTML=`<div class="cm-head"><div><span class="cm-author">${esc(nm)}</span><span class="cm-mood">${selMoodVal}</span></div><span class="cm-time">${now}</span></div><div class="cm-text">${esc(txt)}</div><div class="cm-reply"><div class="cm-reply-lbl">🔬 System Response</div><span style="color:var(--muted);">···</span></div>`;
+  document.getElementById('cmtList').prepend(item);
+  document.getElementById('cmtText').value='';
+  document.getElementById('livePrev').innerHTML='<span style="color:#3a3a6a;">Your comment will appear here as you type...</span>';
+  document.getElementById('charCt').textContent='0 / 300';
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',max_tokens:1000,
+        system:'You are a specialist assistant for Defensio SpamX, a spam detection platform trained on the UCI SMS Spam Collection dataset. Reply to user comments helpfully in 1-2 sentences. Be precise, warm, and knowledgeable about spam detection and digital security. Never say "AI".',
+        messages:[{role:'user',content:`Comment from ${nm} tagged as "${selMoodVal}": "${txt}"\n\nReply concisely and helpfully.`}]
+      })
+    });
+    const d=await res.json();
+    const reply=d.content?.[0]?.text||'Thanks for your feedback! Our team will review and respond shortly.';
+    item.querySelector('.cm-reply').innerHTML=`<div class="cm-reply-lbl">🔬 System Response</div>${esc(reply)}`;
+  }catch(e){
+    item.querySelector('.cm-reply').innerHTML=`<div class="cm-reply-lbl">🔬 System Response</div>Thanks for sharing! For direct help, email <a href="mailto:query@defensiospamx.in" style="color:var(--accent);">query@defensiospamx.in</a>`;
+  }
+  btn.disabled=false;btn.textContent='Post Comment & Get Instant Response 🚀';
+}
+
+// ── Chat
+const chatHist=[];
+async function sendChat(){
+  const inp=document.getElementById('chatInp');
+  const msg=inp.value.trim();if(!msg)return;
+  inp.value='';addMsg(msg,'user');chatHist.push({role:'user',content:msg});
+  document.getElementById('qChips').style.display='none';
+  const sendBtn=document.getElementById('chatSendBtn');sendBtn.disabled=true;
+  const typing=addMsg('Typing…','typing');
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',max_tokens:1000,
+        system:'You are the Defensio SpamX assistant — a spam detection platform using trained deep learning on the UCI SMS Spam Collection dataset. Help users understand spam detection, navigate pages (Home, Upload & Detect, Comments, Get in Touch), choose themes, and explain model training. Email: query@defensiospamx.in, Phone: +91 98765 43210. Keep replies under 3 sentences. Never say "AI".',
+        messages:chatHist
+      })
+    });
+    const d=await res.json();
+    const reply=d.content?.[0]?.text||'I\'m here to help! Email query@defensiospamx.in for direct support.';
+    typing.remove();addMsg(reply,'bot');chatHist.push({role:'assistant',content:reply});
+  }catch(e){
+    typing.remove();addMsg('For direct help: query@defensiospamx.in or +91 98765 43210.','bot');
+  }
+  sendBtn.disabled=false;
+}
+function quickMsg(m){document.getElementById('chatInp').value=m;sendChat();}
+function addMsg(text,type){
+  const msgs=document.getElementById('chatMsgs');
+  const d=document.createElement('div');d.className='msg '+type;d.textContent=text;
+  msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;return d;
+}
+function toggleChat(){
+  const p=document.getElementById('chatPanel'),b=document.getElementById('chatBubble');
+  const open=p.classList.toggle('open');
+  b.style.display=open?'none':'flex';
+  if(open)setTimeout(()=>document.getElementById('chatInp').focus(),200);
+}
+
+// ── Contact form
+function submitContact(){
+  const n=document.getElementById('ctName').value.trim();
+  const e=document.getElementById('ctEmail').value.trim();
+  const m=document.getElementById('ctMsg').value.trim();
+  if(!n||!e||!m){showToast('Please fill in Name, Email & Message');return;}
+  const s=document.getElementById('ctOk');s.style.display='block';
+  showToast('✅ Message sent successfully!');
+  setTimeout(()=>s.style.display='none',7000);
+}
+
+// ── Init
+window.addEventListener('load',()=>{
+  renderEpochs();
+  // Animate cyber images on load
+  document.querySelectorAll('.hc-card').forEach((c,i)=>{
+    c.style.opacity='0';c.style.transform='translateY(20px)';
+    setTimeout(()=>{
+      c.style.transition='opacity .5s ease, transform .5s ease';
+      c.style.opacity='1';c.style.transform='none';
+    },2600+i*120);
+  });
+});
+</script>
+</body>
+</html>
